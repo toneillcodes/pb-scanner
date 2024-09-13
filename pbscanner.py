@@ -4,7 +4,16 @@ import json
 import time
 import re
 
-pbRoot = input('Enter the base URL for PB (ex: https://school.edu/BannerExtensibility): ');
+import argparse
+
+argParser = argparse.ArgumentParser()
+argParser.add_argument("-u", "--url", type=ascii, help="base URL for PB", required=True)
+argParser.add_argument("-l", "--log", help="log output to a file",  action="store_true")
+argParser.add_argument("-v", "--verbose", help="verbose output",  action="store_true")
+args = argParser.parse_args()
+
+#pbRoot = input('Enter the base URL for PB (ex: https://school.edu/BannerExtensibility): ');
+pbRoot = args.url.replace("'", "")
 pbPageUrl = '/internalPb/virtualDomains.pbadmListPages';
 nonPbPageUrl = '/internalPb/virtualDomains.pbadmNonAdmPages';
 pageRoot = '/customPage/page/';
@@ -12,7 +21,8 @@ pageRoot = '/customPage/page/';
 accessiblePages = list();
 inaccessiblePages = list();
 
-print("Starting scan of host " + pbRoot);
+#print("Starting scan of host " + pbRoot);
+#print("Using URL " + pbRoot + pbPageUrl);
 
 ## test the root
 pbPageList = requests.get(pbRoot + pbPageUrl);
