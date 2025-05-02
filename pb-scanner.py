@@ -9,6 +9,7 @@ import argparse
 def main():
         argParser = argparse.ArgumentParser()
         argParser.add_argument("-u", "--url", type=ascii, help="base URL for PB", required=True)
+        argParser.add_argument("-c", "--cookie", type=ascii, help="JSESSIONID value to use")
         argParser.add_argument("-l", "--log", help="log output to a file",  action="store_true")
         argParser.add_argument("-v", "--verbose", help="verbose output",  action="store_true")
         args = argParser.parse_args()
@@ -18,6 +19,9 @@ def main():
         pbPageUrl = '/internalPb/virtualDomains.pbadmListPages';
         nonPbPageUrl = '/internalPb/virtualDomains.pbadmNonAdmPages';
         pageRoot = '/customPage/page/';
+        
+        if(args.cookie is not None):
+                cookie = args.cookie.replace("'", "")
 
         accessiblePages = list();
         inaccessiblePages = list();
@@ -36,7 +40,13 @@ def main():
                 pageName = page['CONSTANT_NAME'];
                 pageUrl = pbRoot + pageRoot + pageName;
                 #print("DEBUG: url: " + pageUrl);
-                pageTest = requests.get(pageUrl, allow_redirects=False);
+                if(args.cookie is not None):
+                    #print("DEBUG: using JSESSIONID: " + cookie);
+                    cookie_jar = {'JSESSIONID': cookie}
+                    pageTest = requests.get(pageUrl, cookies=cookie_jar, allow_redirects=False);
+                else:
+                    #print("DEBUG: running unauthenticated");
+                    pageTest = requests.get(pageUrl, allow_redirects=False);
                 #print("DEBUG: pageTest.status_code: " + str(pageTest.status_code));
                 if pageTest.status_code == 200:
                         #print("page (" + pageName + ") is accessible");
