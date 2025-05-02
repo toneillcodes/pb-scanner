@@ -10,8 +10,8 @@ def main():
         argParser = argparse.ArgumentParser()
         argParser.add_argument("-u", "--url", type=ascii, help="base URL for PB", required=True)
         argParser.add_argument("-c", "--cookie", type=ascii, help="JSESSIONID value to use")
-        argParser.add_argument("-l", "--log", help="log output to a file",  action="store_true")
-        argParser.add_argument("-v", "--verbose", help="verbose output",  action="store_true")
+        #argParser.add_argument("-l", "--log", help="log output to a file",  action="store_true")
+        #argParser.add_argument("-v", "--verbose", help="verbose output",  action="store_true")
         args = argParser.parse_args()
 
         #pbRoot = input('Enter the base URL for PB (ex: https://school.edu/BannerExtensibility): ');
